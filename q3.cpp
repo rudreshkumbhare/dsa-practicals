@@ -115,4 +115,52 @@ public:
             else cout << i << ": level " << level[i] << endl;
         }
     }
+
+    void recommend(int user) {
+        int candidate[MAX], mutual[MAX];
+        int n = 0;
+
+        for(int v = 0; v < V; v++) {
+            if(v == user || isFriend(user, v))
+                continue;
+
+            int count = 0;
+
+            for(Node* p = head[user]; p != NULL; p = p->next) {
+                if(isFriend(p->to, v))
+                    count++;
+            }
+
+            if(count > 0) {
+                candidate[n] = v;
+                mutual[n] = count;
+                n++;
+            }
+        }
+
+        // Sort by mutual friends, highest first
+        for(int i = 0; i < n - 1; i++) {
+            for(int j = i + 1; j < n; j++) {
+                if(mutual[j] > mutual[i]) {
+                    int temp = mutual[i];
+                    mutual[i] = mutual[j];
+                    mutual[j] = temp;
+
+                    temp = candidate[i];
+                    candidate[i] = candidate[j];
+                    candidate[j] = temp;
+                }
+            }
+        }
+
+        cout << "Recommendations for user " << user << ":\n";
+
+        for(int i = 0; i < n; i++) {
+            cout << "User " << candidate[i]
+                << ", mutual friends: " << mutual[i] << endl;
+        }
+
+        if(n == 0)
+            cout << "No recommendations\n";
+    }
 };

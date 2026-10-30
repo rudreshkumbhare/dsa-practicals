@@ -2,6 +2,7 @@
 using namespace std;
 
 # define MAX 10
+
 class Node {
 public:
     int to;
